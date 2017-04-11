@@ -100,6 +100,11 @@ public class MainActivity extends AppCompatActivity implements com.blasco991.cha
     protected void onStart() {
         super.onStart();
         mvc.register(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         mvc.controller.receiveMessages();
     }
 
