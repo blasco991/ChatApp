@@ -7,6 +7,7 @@ import android.support.annotation.WorkerThread;
 import com.blasco991.chatapp.ChatApp;
 import com.blasco991.chatapp.ChatApp.Message;
 import com.blasco991.chatapp.MVC;
+import com.blasco991.chatapp.view.MainActivity;
 import com.blasco991.chatapp.view.View;
 
 import net.jcip.annotations.ThreadSafe;
@@ -108,7 +109,7 @@ public class Controller {
                         }
 
                     } catch (IOException | ParserConfigurationException | SAXException e) {
-                        e.printStackTrace();
+                        return messagesList;
                     }
 
                 urlConnection.disconnect();
