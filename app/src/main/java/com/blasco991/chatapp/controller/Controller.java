@@ -76,7 +76,7 @@ public class Controller {
             if (success) {
                 mvc.controller.receiveMessages();
                 mvc.forEachView(View::onModelChanged);
-            } else mvc.forEachView(v -> v.makeToast("Failed"));
+            } else mvc.forEachView(v -> v.makeToast(v.getContext(), "Failed"));
         }
 
     }

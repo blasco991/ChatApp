@@ -1,5 +1,6 @@
 package com.blasco991.chatapp.view;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
@@ -120,6 +121,11 @@ public class MainActivity extends AppCompatActivity implements com.blasco991.cha
     public void onModelChanged() {
         stringArrayAdapter.notifyDataSetChanged();
         messages.setSelection(message.length());
+    }
+
+    @Override
+    public Context getContext() {
+        return getContext();
     }
 
 }
