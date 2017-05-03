@@ -35,8 +35,8 @@ public class JobService extends android.app.job.JobService {
 
     @Override
     public boolean onStartJob(JobParameters params) {
+        Log.d(TAG, "JobService startJob: " + Looper.myLooper() + "\tJobID: " + params.getJobId());
         mJobHandler.sendEmptyMessage(params.getJobId());
-        Log.d(TAG, "JobService startJob: " + Looper.myLooper() + "\tjob: " + params);
         return true;
     }
 
