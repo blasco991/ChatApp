@@ -5,38 +5,37 @@ import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
-import android.os.Build;
 import android.util.Log;
 import android.widget.TextView;
 
 import com.blasco991.chatapp.controller.Controller;
-import com.blasco991.chatapp.controller.JobSchedulerService;
+import com.blasco991.chatapp.controller.JobService;
 import com.blasco991.chatapp.model.Model;
+
+import static android.app.job.JobInfo.NETWORK_TYPE_NOT_ROAMING;
 
 /**
  * Created by blasco991 on 11/04/17.
  */
 
 public class ChatApp extends Application {
-    private static final long REFRESH_INTERVAL = 60000*15;
+    public static final int PERIODIC_JOB_TAG = 991;
+    public static final int ONESHOT_JOB_TAG = 992;
+    public static final long REFRESH_INTERVAL = 1000 * 60 * 10;
+
     private MVC mvc;
     private static final String TAG = ChatApp.class.getName();
-    private static final int JOB_TAG = 991;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mvc = new MVC(new Model(), new Controller());
 
-        JobScheduler mJobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
-        JobInfo.Builder builder = new JobInfo.Builder(JOB_TAG, new ComponentName(getPackageName(), JobSchedulerService.class.getName()));
+        JobInfo.Builder builder = new JobInfo.Builder(PERIODIC_JOB_TAG, new ComponentName(this, JobService.class.getName()));
+        builder.setPeriodic(REFRESH_INTERVAL).setRequiredNetworkType(NETWORK_TYPE_NOT_ROAMING)
+                .setRequiresCharging(true).setPersisted(true);
 
-        builder.setPeriodic(REFRESH_INTERVAL);
-
-        int scheduleResult;
-        if ((scheduleResult = mJobScheduler.schedule(builder.build())) != JobScheduler.RESULT_SUCCESS) {
-            Log.e(TAG, "Schedule result: " + scheduleResult);
-        }
+        int scheduleResult = ((JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE)).schedule(builder.build());
         Log.d(TAG, "Schedule result: " + scheduleResult);
 
     }

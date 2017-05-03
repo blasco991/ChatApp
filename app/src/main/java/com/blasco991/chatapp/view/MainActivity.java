@@ -1,10 +1,14 @@
 package com.blasco991.chatapp.view;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,12 +18,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.blasco991.chatapp.ChatApp;
 import com.blasco991.chatapp.ChatApp.MessageHolder;
 import com.blasco991.chatapp.MVC;
 import com.blasco991.chatapp.R;
+import com.blasco991.chatapp.controller.JobService;
+
+import static android.app.job.JobInfo.NETWORK_TYPE_ANY;
+import static com.blasco991.chatapp.ChatApp.ONESHOT_JOB_TAG;
 
 public class MainActivity extends AppCompatActivity implements com.blasco991.chatapp.view.View {
 
@@ -45,7 +52,10 @@ public class MainActivity extends AppCompatActivity implements com.blasco991.cha
     @UiThread
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_item_refresh) {
-            mvc.controller.receiveMessages();
+            int scheduleResult = ((JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE)).schedule(
+                    new JobInfo.Builder(ONESHOT_JOB_TAG, new ComponentName(getPackageName(), JobService.class.getName()))
+                            .setMinimumLatency(0).setRequiredNetworkType(NETWORK_TYPE_ANY).build());
+            Log.d(TAG, "OneShot job schedule result: " + scheduleResult);
             return true;
         } else
             return super.onOptionsItemSelected(item);
