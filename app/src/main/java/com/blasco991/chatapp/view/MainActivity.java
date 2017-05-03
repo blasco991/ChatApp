@@ -122,15 +122,4 @@ public class MainActivity extends AppCompatActivity implements com.blasco991.cha
         messages.setSelection(message.length());
     }
 
-    @UiThread
-    public void makeToast(String text, int length) {
-        Toast.makeText(this, text, length).show();
-    }
-
-    @Override
-    @UiThread
-    public void makeToast(String text) {
-        this.makeToast(text, Toast.LENGTH_SHORT);
-    }
-
 }

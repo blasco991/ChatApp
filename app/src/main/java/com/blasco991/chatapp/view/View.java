@@ -1,6 +1,8 @@
 package com.blasco991.chatapp.view;
 
+import android.content.Context;
 import android.support.annotation.UiThread;
+import android.widget.Toast;
 
 /**
  * Created by blasco991 on 11/04/17.
@@ -10,8 +12,12 @@ public interface View {
     void onModelChanged();
 
     @UiThread
-    void makeToast(String text);
+    default void makeToast(Context context, String text, int length) {
+        Toast.makeText(context, text, length).show();
+    }
 
     @UiThread
-    void makeToast(String text, int length);
+    default void makeToast(Context context, String text) {
+        makeToast(context, text, Toast.LENGTH_SHORT);
+    }
 }
