@@ -20,10 +20,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.blasco991.chatapp.ChatApp;
-import com.blasco991.chatapp.ChatApp.MessageHolder;
 import com.blasco991.chatapp.MVC;
 import com.blasco991.chatapp.R;
 import com.blasco991.chatapp.controller.JobService;
+import com.blasco991.chatapp.model.Model;
 
 import static android.app.job.JobInfo.NETWORK_TYPE_ANY;
 import static com.blasco991.chatapp.ChatApp.ONESHOT_JOB_TAG;
@@ -75,8 +75,10 @@ public class MainActivity extends AppCompatActivity implements com.blasco991.cha
         sendButton = (ImageButton) findViewById(R.id.sendButton);
         sendButton.setOnClickListener(e -> {
             mvc.controller.sendMessage(username.getText().toString(), message.getText().toString());
+            message.clearFocus();
+            message.setText("");
         });
-        stringArrayAdapter = new ArrayAdapter<ChatApp.Message>(this, R.layout.list_item, R.id.body, mvc.model.getMessages()) {
+        stringArrayAdapter = new ArrayAdapter<Model.Message>(this, R.layout.list_item, R.id.body, mvc.model.getMessages()) {
 
             @NonNull
             @Override
@@ -95,15 +97,19 @@ public class MainActivity extends AppCompatActivity implements com.blasco991.cha
                     holder = (MessageHolder) convertView.getTag();
                 }
 
-                ChatApp.Message message = getItem(position);
-
+                Model.Message message = getItem(position);
                 holder.author.setText(message.author);
                 holder.body.setText(message.body);
                 return convertView;
             }
         };
         messages.setAdapter(stringArrayAdapter);
+    }
 
+    public static class MessageHolder {
+        //int position;
+        TextView author;
+        TextView body;
     }
 
     @Override

@@ -6,7 +6,6 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.blasco991.chatapp.controller.Controller;
 import com.blasco991.chatapp.controller.JobService;
@@ -21,7 +20,7 @@ import static android.app.job.JobInfo.NETWORK_TYPE_NOT_ROAMING;
 public class ChatApp extends Application {
     public static final int PERIODIC_JOB_TAG = 991;
     public static final int ONESHOT_JOB_TAG = 992;
-    public static final long REFRESH_INTERVAL = 1000 * 60 * 10;
+    public static final long REFRESH_INTERVAL = 1000 * 10;
 
     private MVC mvc;
     private static final String TAG = ChatApp.class.getName();
@@ -44,15 +43,4 @@ public class ChatApp extends Application {
         return mvc;
     }
 
-    public static class MessageHolder {
-        public int position;
-        public TextView author;
-        public TextView body;
-    }
-
-    public static class Message {
-        public int position;
-        public String author;
-        public String body;
-    }
 }

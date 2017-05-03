@@ -2,7 +2,6 @@ package com.blasco991.chatapp.model;
 
 import android.support.annotation.UiThread;
 
-import com.blasco991.chatapp.ChatApp;
 import com.blasco991.chatapp.MVC;
 import com.blasco991.chatapp.view.View;
 
@@ -18,7 +17,7 @@ import java.util.List;
 @ThreadSafe
 public class Model {
     private MVC mvc;
-    private List<ChatApp.Message> messages;
+    private List<Message> messages;
 
     public void setMVC(MVC mvc) {
         this.mvc = mvc;
@@ -26,16 +25,22 @@ public class Model {
     }
 
     @UiThread
-    public void setMessages(List<ChatApp.Message> messeges) {
+    public void setMessages(List<Message> messeges) {
         this.messages.clear();
         this.messages.addAll(messeges);
         mvc.forEachView(View::onModelChanged);
     }
 
     @UiThread
-    public List<ChatApp.Message> getMessages() {
+    public List<Message> getMessages() {
         return messages;
     }
 
+
+    public static class Message {
+        public int position;
+        public String author;
+        public String body;
+    }
 
 }

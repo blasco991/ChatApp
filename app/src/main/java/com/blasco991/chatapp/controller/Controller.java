@@ -4,10 +4,8 @@ import android.os.AsyncTask;
 import android.support.annotation.UiThread;
 import android.support.annotation.WorkerThread;
 
-import com.blasco991.chatapp.ChatApp;
-import com.blasco991.chatapp.ChatApp.Message;
 import com.blasco991.chatapp.MVC;
-import com.blasco991.chatapp.view.MainActivity;
+import com.blasco991.chatapp.model.Model.Message;
 import com.blasco991.chatapp.view.View;
 
 import net.jcip.annotations.ThreadSafe;
