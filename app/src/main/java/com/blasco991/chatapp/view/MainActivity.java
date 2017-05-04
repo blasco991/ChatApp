@@ -14,8 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements com.blasco991.cha
 
     private MVC mvc;
     private ArrayAdapter stringArrayAdapter;
-    private ImageButton sendButton;
     private EditText username;
     private EditText message;
     private ListView messages;
@@ -72,11 +71,10 @@ public class MainActivity extends AppCompatActivity implements com.blasco991.cha
         username = (EditText) findViewById(R.id.username);
         message = (EditText) findViewById(R.id.message);
         messages = (ListView) findViewById(R.id.messages);
-        sendButton = (ImageButton) findViewById(R.id.sendButton);
+        final Button sendButton = (Button) findViewById(R.id.sendButton);
         sendButton.setOnClickListener(e -> {
             mvc.controller.sendMessage(username.getText().toString(), message.getText().toString());
-            message.clearFocus();
-            message.setText("");
+            message.getText().clear();
         });
         stringArrayAdapter = new ArrayAdapter<Model.Message>(this, R.layout.list_item, R.id.body, mvc.model.getMessages()) {
 
@@ -141,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements com.blasco991.cha
 
     @Override
     public Context getContext() {
-        return getContext();
+        return this;
     }
 
 }
