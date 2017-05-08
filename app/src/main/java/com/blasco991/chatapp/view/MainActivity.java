@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements com.blasco991.cha
         };
         messages.setAdapter(stringArrayAdapter);
 
-        swipeRefreshLayout.setOnRefreshListener(() -> refreshCommand());
+        swipeRefreshLayout.setOnRefreshListener(this::refreshCommand);
     }
 
     public static class MessageHolder {
