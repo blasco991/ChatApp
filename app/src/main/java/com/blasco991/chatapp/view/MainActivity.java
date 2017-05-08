@@ -7,14 +7,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageButton;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,10 +35,10 @@ public class MainActivity extends AppCompatActivity implements com.blasco991.cha
 
     private MVC mvc;
     private ArrayAdapter stringArrayAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private EditText username;
     private EditText message;
     private ListView messages;
-
 
     @Override
     @UiThread
@@ -51,13 +52,17 @@ public class MainActivity extends AppCompatActivity implements com.blasco991.cha
     @UiThread
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_item_refresh) {
-            int scheduleResult = ((JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE)).schedule(
-                    new JobInfo.Builder(ONESHOT_JOB_TAG, new ComponentName(getPackageName(), JobService.class.getName()))
-                            .setMinimumLatency(0).setRequiredNetworkType(NETWORK_TYPE_ANY).build());
-            Log.d(TAG, "OneShot job schedule result: " + scheduleResult);
+            refreshCommand();
             return true;
         } else
             return super.onOptionsItemSelected(item);
+    }
+
+    private void refreshCommand() {
+        int scheduleResult = ((JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE)).schedule(
+                new JobInfo.Builder(ONESHOT_JOB_TAG, new ComponentName(getPackageName(), JobService.class.getName()))
+                        .setMinimumLatency(0).setRequiredNetworkType(NETWORK_TYPE_ANY).build());
+        Log.d(TAG, "OneShot job schedule result: " + scheduleResult);
     }
 
     @Override
@@ -68,10 +73,11 @@ public class MainActivity extends AppCompatActivity implements com.blasco991.cha
 
         setContentView(R.layout.activity_main);
 
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         username = (EditText) findViewById(R.id.username);
         message = (EditText) findViewById(R.id.message);
         messages = (ListView) findViewById(R.id.messages);
-        final Button sendButton = (Button) findViewById(R.id.sendButton);
+        final AppCompatImageButton sendButton = (AppCompatImageButton) findViewById(R.id.sendButton);
         sendButton.setOnClickListener(e -> {
             mvc.controller.sendMessage(username.getText().toString(), message.getText().toString());
             message.getText().clear();
@@ -102,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements com.blasco991.cha
             }
         };
         messages.setAdapter(stringArrayAdapter);
+
+        swipeRefreshLayout.setOnRefreshListener(() -> refreshCommand());
     }
 
     public static class MessageHolder {
@@ -135,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements com.blasco991.cha
     public void onModelChanged() {
         stringArrayAdapter.notifyDataSetChanged();
         messages.setSelection(message.length());
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

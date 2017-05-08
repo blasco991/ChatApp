@@ -6,16 +6,21 @@
     android:orientation="vertical"
     tools:context="com.blasco991.chatapp.view.MainActivity">
 
-    <ListView
-        android:id="@+id/messages"
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="5dp"
-        android:layout_weight="20"
-        android:padding="5dp"
-        android:transcriptMode="alwaysScroll"
-        />
+        android:layout_weight="20">
+
+        <ListView
+            android:id="@+id/messages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="5dp"
+            android:padding="5dp"
+            android:transcriptMode="alwaysScroll" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
