@@ -113,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements com.blasco991.cha
     }
 
     public static class MessageHolder {
-        //int position;
         TextView author;
         TextView body;
     }

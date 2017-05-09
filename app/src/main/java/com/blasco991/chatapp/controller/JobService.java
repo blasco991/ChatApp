@@ -23,9 +23,9 @@ public class JobService extends android.app.job.JobService {
 
     @Override
     public boolean onStartJob(JobParameters params) {
-        Log.d(TAG, "JobService startJob: " + Thread.currentThread() + "\tJobID: " + params.getJobId());
+        Log.d(TAG, "JobService startJob on ThreadID: " + Thread.currentThread().getId() + "\tJobID: " + params.getJobId());
         new Thread(() -> {
-            Log.d(TAG, "JobService task running: " + Thread.currentThread() + "\tparams: " + params);
+            Log.d(TAG, "JobService task running on ThreadID: " + Thread.currentThread().getId() + "\tparams: " + params);
             mvc.controller.receiveMessages();
             jobFinished(params, false);
         }).start();
